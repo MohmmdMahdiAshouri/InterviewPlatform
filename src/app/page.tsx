@@ -1,20 +1,14 @@
 import {
-    ArrowRightIcon,
-    Code2Icon,
     CodeXmlIcon,
     Shapes,
     UsersIcon,
     VideoIcon,
 } from "lucide-react";
-import Navbar from "../components/Navbar/Navbar";
 import Image from "next/image";
 
 export default function Home() {
     return (
         <div>
-            {/* NAVBAR */}
-            <Navbar />
-
             {/* HERO SECTION */}
             <div className="max-w-7xl mx-auto px-4 py-20">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
