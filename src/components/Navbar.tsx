@@ -7,7 +7,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 function Navbar() {
     return (
-        <nav className="bg-background backdrop-blur-md sticky top-0 z-50 shadow-lg">
+        <nav className="glassـnavbar backdrop-blur-3xl sticky top-0 z-50 shadow-lg">
             <div className="max-w-7xl mx-auto h-20 flex items-center justify-between">
                 {/* LOGO */}
                 <Link
@@ -19,7 +19,7 @@ function Navbar() {
                     </div>
 
                     <div className="flex flex-col">
-                        <span className="text-xl text-white font-bold bg-clip-text tracking-wider">
+                        <span className="text-2xl font-bold bg-clip-text tracking-wider">
                             پلتفرم مصاحبه آنلاین
                         </span>
                     </div>
