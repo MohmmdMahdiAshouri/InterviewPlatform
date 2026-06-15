@@ -3,15 +3,13 @@
 @theme {
     --color-card-bg: #ffffffe5 !important;
     --color-card-text: #000000 !important;
-    --color-card-desc: #333333 !important;
 
     --color-foreground: #000000 !important;
 }
 
 .light {
-    --color-card-bg: #1a1a1ace !important;
+    --color-card-bg: #1a1a1a !important;
     --color-card-text: #ffffff !important;
-    --color-card-desc: #cccccc !important;
 
     --color-foreground: #ffffff !important;
 }
@@ -35,7 +33,7 @@
         @apply bg-linear-to-r from-green-600 to-lime-400 shadow-[0_0_20px_rgba(34,197,94,0.45),0_0_28px_rgba(16,185,129,0.35),0_0_48px_rgba(132,204,22,0.25)];
     }
     .border_gradient {
-        @apply rounded-2xl bg-linear-to-r from-green-600 to-lime-400 p-[1px];
+        @apply bg-linear-to-r from-green-600 to-lime-400 p-[1px];
     }
     .text_gradient {
         background-image: linear-gradient(
@@ -68,5 +66,5 @@ body {
 }
 
 .stats_container > div {
-    @apply rounded-lg border-2 flex flex-col items-center gap-y-5 h-30 py-2 text-[26px] font-bold bg-linear-to-r from-green-600 to-lime-400 shadow-[0_0_20px_rgba(34,197,94,0.45),0_0_28px_rgba(16,185,129,0.35),0_0_48px_rgba(132,204,22,0.25)];
+    @apply rounded-lg flex flex-col items-center gap-y-5 h-30 py-2 text-[24px] font-bold bg-linear-to-r from-green-600 to-lime-400 shadow-[0_0_20px_rgba(34,197,94,0.45),0_0_28px_rgba(16,185,129,0.35),0_0_48px_rgba(132,204,22,0.25)];
 }
