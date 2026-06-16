@@ -7,7 +7,7 @@ function ProblemsList() {
         <div className="flex flex-col gap-y-4!">
             <Link href={`/problem/#`}>
                 <div className="border_gradient rounded-[22px] p-1! transition-transform duration-500 hover:-translate-y-2 hover:scale-105">
-                    <div className="flex items-center justify-between gap-4 rounded-[15px] bg-card-bg text-card-text p-2">
+                    <div className="flex items-center justify-between gap-4 rounded-[18px] bg-card-bg text-card-text p-2">
                         <div className="flex items-center justify-between gap-x-5">
                             <Code2Icon className="size-8" />
                             <div className="flex flex-col">
