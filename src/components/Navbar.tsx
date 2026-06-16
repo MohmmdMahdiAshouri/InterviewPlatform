@@ -4,6 +4,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
+import Button from "./Button";
 
 function Navbar() {
     return (
@@ -30,10 +31,12 @@ function Navbar() {
                     <ThemeToggle />
 
                     {/* AUTH BTN */}
-                    <button className="group px-6 py-3 bg_gradient rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl flex items-center gap-2">
-                        <span>شروع کردن</span>
-                        <ArrowLeftIcon className="size-5" />
-                    </button>
+                    <Button 
+                        href={"/"} icon={<ArrowLeftIcon className="size-5" />} 
+                        size="md"
+                    >
+                        شروع کردن
+                    </Button>
                 </div>
             </div>
         </nav>

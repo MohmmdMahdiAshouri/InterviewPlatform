@@ -55,6 +55,18 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
+    .btn {
+        @apply cursor-pointer bg-linear-to-r from-green-600 to-lime-400 shadow-[0_0_20px_rgba(34,197,94,0.45),0_0_28px_rgba(16,185,129,0.35),0_0_48px_rgba(132,204,22,0.25)] flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-2xl;
+    }
+    .btn_sm {
+        @apply h-10 w-30 text-[16px] rounded-lg;
+    }
+    .btn_md {
+        @apply h-12 w-35 text-lg rounded-xl;
+    }
+    .btn_lg {
+        @apply h-14 w-40 text-xl rounded-2xl;
+    }
 }
 
 html {
