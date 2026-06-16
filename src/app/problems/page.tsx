@@ -2,7 +2,7 @@ import ProblemsHeader from "./components/problems-header";
 import ProblemsList from "./components/Problems-list";
 import ProblemsState from "./components/Problems-state";
 
-function problems() {
+function Problems() {
     return (
         <div>
             <div className="max-w-6xl mx-auto py-12">
@@ -19,4 +19,4 @@ function problems() {
     );
 }
 
-export default problems;
+export default Problems;
