@@ -18,7 +18,7 @@ function ProblemsList() {
                                                 برعکس کردن رشته (string)
                                             </h2>
                                             <span
-                                                className={`bg-amber-400 p-1 rounded-2xl text-sm`}
+                                                className="badge_hard"
                                             >
                                                 متوسط
                                             </span>
@@ -55,7 +55,7 @@ function ProblemsList() {
                                                 برعکس کردن رشته (string)
                                             </h2>
                                             <span
-                                                className={`bg-amber-400 p-1 rounded-2xl text-sm`}
+                                                className="badge_mid"
                                             >
                                                 متوسط
                                             </span>

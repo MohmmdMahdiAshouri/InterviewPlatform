@@ -67,6 +67,15 @@
     .btn_lg {
         @apply h-14 w-40 text-xl rounded-2xl;
     }
+    .badge_esay {
+        @apply bg-blue-400 p-1 rounded-2xl text-sm font-bold
+    }
+    .badge_mid {
+        @apply bg-amber-500 p-1 rounded-2xl text-sm font-bold
+    }
+    .badge_hard {
+        @apply bg-red-700 p-1 rounded-2xl text-sm font-bold
+    }
 }
 
 html {
