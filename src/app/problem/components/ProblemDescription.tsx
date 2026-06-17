@@ -9,11 +9,7 @@ function ProblemDescription() {
                     <h1 className="text-3xl font-bold text_gradient">
                         برعکس کردن رشته
                     </h1>
-                    <span
-                        className={`badge_hard`}
-                    >
-                        سخت
-                    </span>
+                    <span className={`badge_hard`}>سخت</span>
                 </div>
                 <p className="font-light text-xl">دسته بندی: رشته ها</p>
 
@@ -36,10 +32,7 @@ function ProblemDescription() {
                     </h2>
 
                     <div className="space-y-3 text-base leading-relaxed">
-                        <p className="font-light">
-                            توصیحات تمرین
-                        </p>
-
+                        <p className="font-light">توصیحات تمرین</p>
                     </div>
                 </div>
 
@@ -50,52 +43,47 @@ function ProblemDescription() {
                     </h2>
                     <div className="space-y-4">
                         {/* {problem.examples.map((example, idx) => ( */}
-                            <div>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <p>
-                                        مثال 1
-                                    </p>
+                        <div>
+                            <p>مثال 1</p>
+                            <div
+                                dir="ltr"
+                                className="rounded-lg p-4 text-md font-mono space-y-1.5 bg-[#1e1e2e] text-white"
+                            >
+                                <div className="flex gap-2">
+                                    <span className="text-primary font-bold min-w-17.5">
+                                        Input:
+                                    </span>
+                                    <span>{"{1, 2}"}</span>
                                 </div>
-                                <div dir="ltr" className="rounded-lg p-4 text-md font-mono space-y-1.5 bg-[#1e1e2e]">
-                                    <div className="flex gap-2">
-                                        <span className="text-primary font-bold min-w-17.5">
-                                            Input:
-                                        </span>
-                                        <span>{"{1, 2}"}</span>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <span className="font-bold min-w-17.5">
-                                            Output:
-                                        </span>
-                                        <span>[1, 2]</span>
-                                    </div>
-                                    {/* {example.explanation && ( */}
-                                        <div className="pt-2 border-t-2 mt-2">
-                                            <span className="text-md">
-                                                <span>
-                                                    Explanation:
-                                                </span>{" "}
-                                                Explanation of this example
-                                            </span>
-                                        </div>
-                                    {/* )} */}
+                                <div className="flex gap-2">
+                                    <span className="font-bold min-w-17.5">
+                                        Output:
+                                    </span>
+                                    <span>[1, 2]</span>
                                 </div>
+                                {/* {example.explanation && ( */}
+                                <div className="pt-2 border-t-2 mt-2">
+                                    <span className="text-md">
+                                        <span>Explanation:</span> Explanation of
+                                        this example
+                                    </span>
+                                </div>
+                                {/* )} */}
                             </div>
+                        </div>
                         {/* ))} */}
                     </div>
                 </div>
 
                 {/* CONSTRAINTS */}
                 <div className="rounded-xl shadow-sm p-5 border">
-                    <h2 className="text-xl font-bold mb-4 ">
-                        محدودیت ها
-                    </h2>
+                    <h2 className="text-xl font-bold mb-4 ">محدودیت ها</h2>
                     <ul className="space-y-2">
                         {/* {problem.constraints.map((constraint, idx) => ( */}
-                            <li dir="ltr" className="flex gap-2">
-                                <span>•</span>
-                                <code>li</code>
-                            </li>
+                        <li dir="ltr" className="flex gap-2">
+                            <span>•</span>
+                            <code>li</code>
+                        </li>
                         {/* ))} */}
                     </ul>
                 </div>
