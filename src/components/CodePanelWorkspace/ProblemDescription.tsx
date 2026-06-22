@@ -2,7 +2,7 @@ import GapSelect from "@/src/components/SelectBox";
 
 function ProblemDescription() {
     return (
-        <div className="h-full overflow-y-auto bg-base-200">
+        <div className="h-screen overflow-y-auto bg-base-200">
             {/* HEADER SECTION */}
             <div className="p-6 border-b border-base-300">
                 <div className="flex items-center gap-x-2 mb-3">

@@ -1,14 +1,18 @@
+import React from "react";
 import { Panel, Group, Separator } from "react-resizable-panels";
 import CodeEditorPanel from "./CodeEditorPanel";
-import ProblemDescription from "./ProblemDescription";
 import OutputPanel from "./OutputPanel";
 
-function CodePanelWorkspace() {
+interface CodePanelWorkspaceProps {
+    rightPanelContent: React.ReactNode;
+}
+
+function CodePanelWorkspace({rightPanelContent} : CodePanelWorkspaceProps) {
     return (
         <Group orientation="horizontal">
             {/* right panel- problem desc */}
             <Panel defaultSize={40} minSize={30}>
-                <ProblemDescription />
+                {rightPanelContent}
             </Panel>
 
             <Separator className="w-2 bg_gradient cursor-col-resize" />
