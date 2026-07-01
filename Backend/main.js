@@ -1,10 +1,10 @@
 import express from "express";
 import { config } from "dotenv";
-import { cors } from "cors";
+import cors from "cors";
 import cookieParser from "cookie-parser";
-import { router } from "./src/app.routes";
-import { notFoundHandler } from "./src/common/exception/not-found.handler";
-import { allExceptionHandler } from "./src/common/exception/all-exception.handler";
+import { mainRoutes } from "./src/app.routes.js";
+import { notFoundHandler } from "./src/common/exception/not-found.handler.js";
+import { allExceptionHandler } from "./src/common/exception/all-exception.handler.js";
 config();
 
 const app = express();
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(router)
+app.use(mainRoutes)
 
 app.use(notFoundHandler)
 app.use(allExceptionHandler)
