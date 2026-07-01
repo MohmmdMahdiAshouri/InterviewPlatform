@@ -1,7 +1,10 @@
 import { Router } from "express";
+import { authRoute } from "./modules/auth/auth.routes.js";
 
-export const router = Router();
+export const mainRoutes = Router();
 
-router.get("/", (req, res) => {
+mainRoutes.get("/", (req, res) => {
   res.json({ message: "Server is running!" });
 });
+
+mainRoutes.use("/auth", authRoute)
