@@ -72,16 +72,16 @@ async function checkOtpHandler(req, res, next) {
             throw createHttpError(404, "otp not found");
         }
 
-        if (otp.used) {
-            throw createHttpError(401, "otp already used");
+        if (Date.now() > otp.expiresAt.getTime()) {
+            throw createHttpError(401, "otp expired");
         }
 
         if (otp.attempts >= 5) {
             throw createHttpError(429, "too many attempts");
         }
-
-        if (Date.now() > otp.expiresAt.getTime()) {
-            throw createHttpError(401, "otp expired");
+        
+        if (otp.used) {
+            throw createHttpError(401, "otp already used");
         }
 
         if (otp.code !== code) {
