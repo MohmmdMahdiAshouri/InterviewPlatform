@@ -193,6 +193,24 @@ async function verifyRefreshTokenHandler(req, res, next) {
     }
 }
 
+async function logoutHandler(req, res, next) {
+    try {
+        const { refreshToken } = req.cookies;
+
+        if (refreshToken) {
+            await prisma.refreshToken.delete({
+                where: { token: refreshToken },
+            });
+        }
+
+        res.clearCookie("refreshToken");
+
+        return res.json({ message: "logged out successfully" });
+    } catch (error) {
+        next(error);
+    }
+}
+
 function generateTokens({ userId }) {
     const accessToken = jwt.sign({ userId }, process.env.JWT_ACCESS_SECRET, {
         expiresIn: "15m",
@@ -212,4 +230,4 @@ function generateTokens({ userId }) {
     return { accessToken, refreshToken };
 }
 
-export { sendOtpHandler, checkOtpHandler, verifyRefreshTokenHandler };
+export { sendOtpHandler, checkOtpHandler, verifyRefreshTokenHandler, logoutHandler };
