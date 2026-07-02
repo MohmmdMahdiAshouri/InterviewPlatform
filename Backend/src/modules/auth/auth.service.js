@@ -107,15 +107,86 @@ async function checkOtpHandler(req, res, next) {
             userId: user.id,
         });
 
+        await prisma.refreshToken.create({
+            data: {
+                token: refreshToken,
+                userId: user.id,
+                expiresAt: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+            },
+        });
+
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "strict",
+            sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 15 * 24 * 60 * 60 * 1000,
         });
 
         return res.json({
             message: "logged in successfully",
             accessToken,
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function verifyRefreshTokenHandler(req, res, next) {
+    try {
+        const { refreshToken } = req.cookies;
+
+        if (!refreshToken) {
+            throw createHttpError(401, "unauthorized");
+        }
+
+        const decoded = jwt.verify(
+            refreshToken,
+            process.env.JWT_REFRESH_SECRET,
+        );
+
+        if (!decoded?.userId) {
+            throw createHttpError(401, "invalid token");
+        }
+
+        const tokenInDb = await prisma.refreshToken.findUnique({
+            where: {
+                token: refreshToken,
+            },
+        });
+
+        if (!tokenInDb) {
+            throw createHttpError(401, "token expired");
+        }
+
+        const tokens = generateTokens({
+            userId: decoded.userId,
+        });
+
+        await prisma.$transaction(async (tx) => {
+            await tx.refreshToken.delete({
+                where: {
+                    token: refreshToken,
+                },
+            });
+
+            await tx.refreshToken.create({
+                data: {
+                    token: tokens.refreshToken,
+                    userId: decoded.userId,
+                    expiresAt: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+                },
+            });
+        });
+
+        res.cookie("refreshToken", tokens.refreshToken, {
+            httpOnly: true,
+            sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 15 * 24 * 60 * 60 * 1000,
+        });
+
+        return res.json({
+            accessToken: tokens.accessToken,
         });
     } catch (error) {
         next(error);
@@ -141,4 +212,4 @@ function generateTokens({ userId }) {
     return { accessToken, refreshToken };
 }
 
-export { sendOtpHandler, checkOtpHandler };
+export { sendOtpHandler, checkOtpHandler, verifyRefreshTokenHandler };
