@@ -40,6 +40,8 @@ export default function Button(props: Props) {
     } = props;
 
     const baseClasses = `
+    transition-colors
+    duration-300
     btn
     btn_${size}
     ${className}

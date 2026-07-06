@@ -10,20 +10,20 @@ async function sendOtpHandler(req, res, next) {
 
         const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-        let user = await prisma.user.findUnique({
+        let user = await prisma.user.upsert({
             where: {
                 phone,
             },
-        });
+            update: {
+                phone,
+                fullName,
+            },
 
-        if (!user) {
-            user = await prisma.user.create({
-                data: {
-                    phone,
-                    fullName,
-                },
-            });
-        }
+            create: {
+                phone,
+                fullName,
+            },
+        });
 
         await prisma.otp.upsert({
             where: {
