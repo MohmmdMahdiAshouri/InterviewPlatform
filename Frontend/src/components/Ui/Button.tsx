@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactNode, ButtonHTMLAttributes, AnchorHTMLAttributes } from "react";
+import { SpinnerDots, Spinner } from "./Spinner";
 
 type Size = "sm" | "md" | "lg";
 
@@ -9,6 +10,7 @@ interface BaseProps {
     loading?: boolean;
     size?: Size;
     className?: string;
+    spinnerSize?: number;
 }
 
 type ButtonProps = BaseProps &
@@ -23,12 +25,6 @@ type LinkProps = BaseProps &
 
 type Props = ButtonProps | LinkProps;
 
-export function Spinner() {
-    return (
-        <div className="size-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-    );
-}
-
 export default function Button(props: Props) {
     const {
         children,
@@ -36,6 +32,7 @@ export default function Button(props: Props) {
         loading = false,
         size = "md",
         className = "",
+        spinnerSize,
         ...rest
     } = props;
 
@@ -51,7 +48,7 @@ export default function Button(props: Props) {
     const content = (
         <>
             {children}
-            {loading && <Spinner />}
+            {loading && <SpinnerDots size={spinnerSize} />}
             {!loading && icon}
         </>
     );

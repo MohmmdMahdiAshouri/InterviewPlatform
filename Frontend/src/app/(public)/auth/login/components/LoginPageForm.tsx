@@ -54,7 +54,7 @@ function LoginPageForm() {
                     type="submit"
                     loading={sendOtp.isPending}
                     className="w-full"
-                    size="lg"
+                    size="md"
                 >
                     ارسال کد
                 </Button>
