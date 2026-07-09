@@ -7,6 +7,7 @@ import { loginSchema } from "@/src/validations/login.schema";
 import Form from "@/src/components/Ui/Form";
 import FormField from "@/src/components/Ui/FormField";
 import Button from "@/src/components/Ui/Button";
+import { getErrorMessage } from "@/src/libs/getErrorMessage";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -16,11 +17,9 @@ function LoginPageForm() {
     const handleSubmit = (data: LoginFormData) => {
         sendOtp.mutate(data);
     };
-
-    const error = sendOtp.error as AxiosError<{ message: string }> | null;
-
-    const serverError = error
-        ? error.response?.data?.message || error.message
+    
+    const serverError = sendOtp.error
+        ? getErrorMessage(sendOtp.error)
         : undefined;
 
     return (

@@ -16,6 +16,31 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+let refreshPromise: Promise<string> | null = null;
+
+async function refreshAccessToken(): Promise<string> {
+    if (refreshPromise) {
+        return refreshPromise;
+    }
+
+    refreshPromise = axios
+        .post(
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/verify-refresh-token`,
+            {},
+            { withCredentials: true },
+        )
+        .then((response) => {
+            const accessToken = response.data.accessToken;
+            useAuthStore.getState().setAccessToken(accessToken);
+            return accessToken;
+        })
+        .finally(() => {
+            refreshPromise = null;
+        });
+
+    return refreshPromise;
+}
+
 api.interceptors.response.use(
     (response) => response,
 
@@ -25,22 +50,14 @@ api.interceptors.response.use(
         if (
             error.response?.status === 401 &&
             !originalRequest._retry &&
-            !originalRequest.url?.includes("/auth/verify-refresh-token")
+            !originalRequest.url?.includes("/auth/verify-refresh-token") &&
+            !originalRequest.url?.includes("/auth/send-otp") &&
+            !originalRequest.url?.includes("/auth/check-otp")
         ) {
             originalRequest._retry = true;
 
             try {
-                const response = await axios.post(
-                    `${process.env.NEXT_PUBLIC_API_URL}/auth/verify-refresh-token`,
-                    {},
-                    {
-                        withCredentials: true,
-                    },
-                );
-
-                const accessToken = response.data.accessToken;
-
-                useAuthStore.getState().setAccessToken(accessToken);
+                const accessToken = await refreshAccessToken();
 
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
