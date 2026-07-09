@@ -102,7 +102,7 @@ const GapSelect = forwardRef<HTMLDivElement, GapSelectProps>(
                         flex items-center justify-between w-full py-2 
                         bg-black/5 rounded-xl
                         text-sm font-bold transition-all duration-300
-                        h-12 pl-5 border-2
+                        h-12 pl-5 pr-2 border-2
                         ${icon && "pr-10"}
                         ${
                             error

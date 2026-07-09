@@ -45,7 +45,7 @@ export default function Form<T extends FieldValues>({
         addNotification({
             type: "error",
             title: "خطا",
-            message: "خطایی رخ داده است لطفا دوباره تلاش کنید",
+            message: serverError,
         });
     }, [serverError, addNotification]);
 
