@@ -1,4 +1,4 @@
-import GapSelect from "@/src/components/SelectBox";
+import GapSelect from "@/src/components/Ui/Select";
 
 function ProblemDescription() {
     return (

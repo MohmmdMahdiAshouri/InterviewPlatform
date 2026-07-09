@@ -3,6 +3,6 @@ export const allExceptionHandler = (err, req, res, next) => {
     if (!status || isNaN(+status) || status > 511 || status < 200) status = 500;
     res.status(status).json({
         success: false,
-        message: err?.message ?? err?.stack ?? "Internal Server Error",
+        message: err?.message ?? "Internal Server Error",
     });
 };

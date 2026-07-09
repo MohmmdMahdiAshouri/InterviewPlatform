@@ -25,7 +25,7 @@ async function sendOtpHandler(req, res, next) {
             },
         });
 
-        await prisma.otp.upsert({
+        const otp = await prisma.otp.upsert({
             where: {
                 phone,
             },
@@ -45,7 +45,8 @@ async function sendOtpHandler(req, res, next) {
         });
         return res.status(200).json({
             message: "otp sent successfully",
-            code,
+            expiresAt: otp.expiresAt,
+            serverTime: new Date()
         });
     } catch (error) {
         next(error);
@@ -73,7 +74,7 @@ async function checkOtpHandler(req, res, next) {
         }
 
         if (Date.now() > otp.expiresAt.getTime()) {
-            throw createHttpError(401, "otp expired");
+            throw createHttpError(400, "otp expired");
         }
 
         if (otp.attempts >= 5) {
@@ -81,7 +82,7 @@ async function checkOtpHandler(req, res, next) {
         }
         
         if (otp.used) {
-            throw createHttpError(401, "otp already used");
+            throw createHttpError(400, "otp already used");
         }
 
         if (otp.code !== code) {
@@ -93,7 +94,7 @@ async function checkOtpHandler(req, res, next) {
                     },
                 },
             });
-            throw createHttpError(401, "invalid otp");
+            throw createHttpError(400, "invalid otp");
         }
 
         await prisma.otp.update({

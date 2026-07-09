@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/src/components/Ui/Button";
-import GapSelect from "@/src/components/Ui/SelectBox";
+import GapSelect from "@/src/components/Ui/Select";
 import { Editor, Monaco } from "@monaco-editor/react";
 import { Maximize, Minimize, PlayIcon } from "lucide-react";
 import Image from "next/image";
