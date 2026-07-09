@@ -17,6 +17,8 @@ export interface CheckOtpPayload {
 export interface SendOtpResponse {
     message: string;
     code: string;
+    expiresAt: string;
+    serverTime: string;
 }
 
 export interface CheckOtpResponse {

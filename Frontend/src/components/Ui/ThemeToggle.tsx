@@ -1,5 +1,4 @@
 "use client";
-
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -11,12 +10,12 @@ export function ThemeToggle() {
         setMounted(true);
     }, []);
 
-    if (!mounted) return null;
-
     const isLight = theme === "light";
 
     return (
-        <label className="relative inline-flex items-center cursor-pointer">
+        <label
+            className={`relative inline-flex items-center cursor-pointer ${mounted ? "opacity-100" : "opacity-0"}`}
+        >
             <input
                 type="checkbox"
                 className="sr-only peer"
