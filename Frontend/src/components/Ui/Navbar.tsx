@@ -4,6 +4,8 @@ import {
     LogOut,
     Settings,
     User,
+    UserPlus,
+    ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -116,6 +118,30 @@ function Navbar() {
                                         icon: <Settings className="size-4" />,
                                         onClick: () => router.push("/settings"),
                                     },
+                                    ...(user.role === "USER"
+                                        ? [{
+                                                label: "درخواست مصاحبه‌کننده",
+                                                icon: (
+                                                    <UserPlus className="size-4" />
+                                                ),
+                                                onClick: () =>
+                                                    router.push(
+                                                        "/role-request",
+                                                    ),
+                                            }]
+                                        : []),
+                                    ...(user.role === "ADMIN"
+                                        ? [{
+                                                label: "مدیریت درخواست‌ها",
+                                                icon: (
+                                                    <ShieldCheck className="size-4" />
+                                                ),
+                                                onClick: () =>
+                                                    router.push(
+                                                        "/admin/role-requests",
+                                                    ),
+                                            }]
+                                        : []),
                                     {
                                         divider: true,
                                         label: "خروج",
