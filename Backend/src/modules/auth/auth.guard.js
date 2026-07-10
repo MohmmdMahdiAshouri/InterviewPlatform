@@ -36,6 +36,7 @@ export async function AuthGuard(req, res, next) {
             id: user.id,
             phone: user.phone,
             fullName: user.fullName,
+            role: user.role,
         };
 
         next();

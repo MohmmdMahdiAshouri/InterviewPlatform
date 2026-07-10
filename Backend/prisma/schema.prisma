@@ -6,14 +6,29 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  USER
+  INTERVIEWER
+  ADMIN
+}
+
+enum RoleRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id        String   @id @default(uuid())
   fullName  String
   phone     String   @unique
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  refreshTokens RefreshToken[]
+  refreshTokens    RefreshToken[]
+  roleRequests     RoleRequest[]  @relation("RoleRequester")
+  reviewedRequests RoleRequest[]  @relation("RoleReviewer")
 }
 
 model Otp {
@@ -36,4 +51,18 @@ model RefreshToken {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model RoleRequest {
+  id         String            @id @default(uuid())
+  userId     String
+  status     RoleRequestStatus @default(PENDING)
+  reviewedBy String?
+  createdAt  DateTime          @default(now())
+  reviewedAt DateTime?
+
+  user     User  @relation("RoleRequester", fields: [userId], references: [id], onDelete: Cascade)
+  reviewer User? @relation("RoleReviewer", fields: [reviewedBy], references: [id])
+
+  @@index([status])
 }

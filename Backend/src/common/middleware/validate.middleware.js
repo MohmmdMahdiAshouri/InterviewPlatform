@@ -9,7 +9,14 @@ export function validate(schema, source = "body") {
                     result.error.issues[0]?.message ?? "Validation failed";
                 throw createHttpError(400, message);
             }
-            req[source] = result.data;
+            if (source === "query") {
+                Object.keys(req.query).forEach((key) => {
+                    delete req.query[key];
+                });
+                Object.assign(req.query, result.data);
+            } else {
+                req[source] = result.data;
+            }
             next();
         } catch (error) {
             next(error);
