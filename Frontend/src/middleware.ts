@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedPaths = ["/interview", "/problem"];
+const protectedPaths = ["/interview", "/problem", "/role-request", "/admin"];
 
 export function middleware(request: NextRequest) {
     const hasRefreshToken = request.cookies.has("refreshToken");
@@ -16,5 +16,10 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/interview/:path*", "/problem/:path*"],
+    matcher: [
+        "/interview/:path*",
+        "/problem/:path*",
+        "/role-request/:path*",
+        "/admin/:path*",
+    ],
 };

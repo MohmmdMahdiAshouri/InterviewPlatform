@@ -1,7 +1,10 @@
+export type Role = "USER" | "INTERVIEWER" | "ADMIN";
+
 export interface User {
     id: string;
     phone: string;
     fullName: string;
+    role: Role;
 }
 
 export interface SendOtpPayload {
@@ -30,6 +33,7 @@ export interface CheckLoginResponse {
     id: string;
     phone: string;
     fullName: string;
+    role: Role;
 }
 
 export interface LogoutResponse {
