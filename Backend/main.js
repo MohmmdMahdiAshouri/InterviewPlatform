@@ -1,10 +1,12 @@
 import express from "express";
+import { createServer } from "http";
 import { config } from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { mainRoutes } from "./src/app.routes.js";
 import { notFoundHandler } from "./src/common/exception/not-found.handler.js";
 import { allExceptionHandler } from "./src/common/exception/all-exception.handler.js";
+import { initSocketServer } from "./src/sockets/index.js";
 config();
 
 const app = express();
@@ -26,6 +28,9 @@ app.use(mainRoutes)
 app.use(notFoundHandler)
 app.use(allExceptionHandler)
 
-app.listen(PORT, () => {
+const httpServer = createServer(app);
+initSocketServer(httpServer);
+
+httpServer.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 })

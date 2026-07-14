@@ -1,7 +1,6 @@
 "use client";
 import { z } from "zod";
 import { useSendOtp } from "@/src/hooks/useAuth";
-import { AxiosError } from "axios";
 import { Phone, User } from "lucide-react";
 import { loginSchema } from "@/src/validations/login.schema";
 import Form from "@/src/components/Ui/Form";

@@ -18,6 +18,23 @@ enum RoleRequestStatus {
   REJECTED
 }
 
+enum ProblemVisibility {
+  PRIVATE
+  PUBLIC
+}
+
+enum ProblemDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum InterviewStatus {
+  SCHEDULED
+  ACTIVE
+  ENDED
+}
+
 model User {
   id        String   @id @default(uuid())
   fullName  String
@@ -26,9 +43,15 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  otp Otp?
   refreshTokens    RefreshToken[]
   roleRequests     RoleRequest[]  @relation("RoleRequester")
   reviewedRequests RoleRequest[]  @relation("RoleReviewer")
+  problems         Problem[]      @relation("ProblemOwner")
+
+  hostedInterviews        Interview[]             @relation("InterviewHost")
+  interviewParticipations InterviewParticipant[]
+  sentChatMessages        ChatMessage[]
 }
 
 model Otp {
@@ -65,4 +88,83 @@ model RoleRequest {
   reviewer User? @relation("RoleReviewer", fields: [reviewedBy], references: [id])
 
   @@index([status])
+}
+
+model Problem {
+  id          String            @id @default(uuid())
+  ownerId     String
+  title       String
+  description String
+  category    String
+  difficulty  ProblemDifficulty
+  visibility  ProblemVisibility @default(PRIVATE)
+  starterCode Json?
+  examples    Json?
+  constraints Json?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  interviewProblems InterviewProblem[]
+
+  owner User @relation("ProblemOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([visibility])
+  @@index([ownerId])
+}
+
+model Interview {
+  id        String          @id @default(uuid())
+  hostId    String
+  title     String
+  roomCode  String          @unique
+  status    InterviewStatus @default(SCHEDULED)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  host         User                    @relation("InterviewHost", fields: [hostId], references: [id])
+  problems     InterviewProblem[]
+  participants InterviewParticipant[]
+  chatMessages ChatMessage[]
+
+  @@index([hostId])
+  @@index([status])
+}
+
+model InterviewProblem {
+  id          String   @id @default(uuid())
+  interviewId String
+  problemId   String
+  order       Int      @default(0)
+
+  interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  problem   Problem   @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([interviewId, problemId])
+  @@index([interviewId])
+}
+
+model InterviewParticipant {
+  id          String   @id @default(uuid())
+  interviewId String
+  userId      String
+  joinedAt    DateTime @default(now())
+
+  interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@unique([interviewId, userId])
+  @@index([interviewId])
+}
+
+model ChatMessage {
+  id          String   @id @default(uuid())
+  interviewId String
+  senderId    String
+  content     String
+  createdAt   DateTime @default(now())
+
+  interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  sender    User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([interviewId, createdAt])
 }

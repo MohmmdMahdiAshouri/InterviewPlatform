@@ -6,6 +6,8 @@ import {
     User,
     UserPlus,
     ShieldCheck,
+    Code2Icon,
+    Video,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -118,6 +120,28 @@ function Navbar() {
                                         icon: <Settings className="size-4" />,
                                         onClick: () => router.push("/settings"),
                                     },
+                                    ...(user.role === "INTERVIEWER" || user.role === "ADMIN"
+                                        ? [{
+                                                label: "مسائل من",
+                                                icon: (
+                                                    <Code2Icon className="size-4" />
+                                                ),
+                                                onClick: () =>
+                                                    router.push(
+                                                        "/my-problems",
+                                                    ),
+                                            },
+                                            {
+                                                label: "مصاحبه‌های من",
+                                                icon: (
+                                                    <Video className="size-4" />
+                                                ),
+                                                onClick: () =>
+                                                    router.push(
+                                                        "/my-interviews",
+                                                    ),
+                                            }]
+                                        : []),
                                     ...(user.role === "USER"
                                         ? [{
                                                 label: "درخواست مصاحبه‌کننده",
@@ -130,6 +154,16 @@ function Navbar() {
                                                     ),
                                             }]
                                         : []),
+                                    {
+                                        label: "ورود به مصاحبه",
+                                        icon: (
+                                            <Video className="size-4" />
+                                        ),
+                                        onClick: () =>
+                                            router.push(
+                                                "/my-interviews",
+                                            ),
+                                    },
                                     ...(user.role === "ADMIN"
                                         ? [{
                                                 label: "مدیریت درخواست‌ها",

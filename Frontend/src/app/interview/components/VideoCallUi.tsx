@@ -1,96 +1,113 @@
 "use client";
+import { useEffect, useState } from "react";
 import {
-    Call,
     CallControls,
     SpeakerLayout,
     StreamCall,
+    StreamTheme,
     StreamVideo,
     StreamVideoClient,
 } from "@stream-io/video-react-sdk";
-import {
-    Loader2Icon,
-    MessageSquareIcon,
-    TruckElectricIcon,
-    UsersIcon,
-    XIcon,
-} from "lucide-react";
+import { useVideoToken } from "@/src/hooks/useInterviewVideo";
+import { useCheckLogin } from "@/src/hooks/useAuth";
+import { Skeleton } from "@/src/components/Ui/Skeleton";
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 
-function VideoCallUi() {
-    if (true) {
+interface VideoCallUiProps {
+    interviewId: string;
+}
+
+function VideoCallUi({ interviewId }: VideoCallUiProps) {
+    const [client, setClient] = useState<StreamVideoClient | null>(null);
+    const [call, setCall] = useState<ReturnType<StreamVideoClient["call"]> | null>(null);
+
+    const { data: tokenData, isPending: tokenLoading, error: tokenError } = useVideoToken(interviewId);
+    const { data: user } = useCheckLogin();
+
+    // Create client and join call when token is available
+    useEffect(() => {
+        if (!tokenData || !user) return;
+
+        const videoClient = new StreamVideoClient({
+            apiKey: tokenData.apiKey,
+            user: {
+                id: tokenData.userId,
+                name: user.fullName,
+            },
+            token: tokenData.token,
+        });
+
+        setClient(videoClient);
+
+        const defaultCall = videoClient.call("default", tokenData.callId);
+        defaultCall.join({ create: true }).catch(console.error);
+        setCall(defaultCall);
+
+        return () => {
+            defaultCall.leave().catch(console.error);
+            videoClient.disconnectUser().catch(console.error);
+            setClient(null);
+            setCall(null);
+        };
+    }, [tokenData, user]);
+
+    // Loading state
+    if (tokenLoading) {
+        return (
+            <div className="h-screen flex items-center justify-center">
+                <div className="text-center space-y-4">
+                    <Skeleton className="w-48 h-8 mx-auto" />
+                    <p className="text-sm opacity-70">در حال اتصال به تماس ویدیویی...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Error state
+    if (tokenError || !tokenData) {
+        return (
+            <div className="h-screen flex items-center justify-center">
+                <div className="text-center space-y-2">
+                    <h2 className="text-xl font-bold">خطا در اتصال</h2>
+                    <p className="text-sm opacity-70">
+                        امکان اتصال به تماس ویدیویی وجود ندارد.
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
+    // Waiting for client/call to be ready
+    if (!client || !call) {
         return (
             <div className="h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <Loader2Icon className="w-12 h-12 mx-auto animate-spin text-primary mb-4" />
-                    <p className="text-lg">Joining call...</p>
+                    <Skeleton className="w-32 h-32 rounded-full mx-auto mb-4" />
+                    <p className="text-sm opacity-70">در حال آماده‌سازی تماس...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="h-full flex gap-3 relative str-video">
-            <div className="flex-1 flex flex-col gap-3">
-                {/* Participants count badge and Chat Toggle */}
-                <div className="flex items-center justify-between gap-2 bg-base-100 p-3 rounded-lg shadow">
-                    <div className="flex items-center gap-2">
-                        <UsersIcon className="w-5 h-5 text-primary" />
-                        <span className="font-semibold">
-                            {/* {participantCount}{" "}
-                            {participantCount === 1 */}
-                            ? participant : participants
-                        </span>
-                    </div>
-                    {true && true && (
-                        <button
-                            // onClick={() => setIsChatOpen(!isChatOpen)}
-                            className={`btn btn-sm gap-2`}
-                            // title={isChatOpen ? "Hide chat" : "Show chat"}
-                        >
-                            <MessageSquareIcon className="size-4" />
-                            Chat
-                        </button>
-                    )}
-                </div>
-
-                <div className="flex-1 bg-base-300 rounded-lg overflow-hidden relative">
-                    <SpeakerLayout />
-                </div>
-
-                <div className="bg-base-100 p-3 rounded-lg shadow flex justify-center">
-                    <CallControls />
-                </div>
-            </div>
-
-            {/* CHAT SECTION */}
-
-            {true && true && (
-                <div
-                    className={`flex flex-col rounded-lg shadow overflow-hidden bg-[#272a30] transition-all duration-300 ease-in-out ${
-                        true ? "w-80 opacity-100" : "w-0 opacity-0"
-                    }`}
-                >
-                    {true && (
-                        <>
-                            <div className="bg-[#1c1e22] p-3 border-b border-[#3a3d44] flex items-center justify-between">
-                                <h3 className="font-semibold text-white">
-                                    Session Chat
-                                </h3>
-                                <button
-                                    // onClick={() => setIsChatOpen(false)}
-                                    className="text-gray-400 hover:text-white transition-colors"
-                                    title="Close chat"
-                                >
-                                    <XIcon className="size-5" />
-                                </button>
+        <div className="h-full str-video">
+            <StreamVideo client={client}>
+                <StreamCall call={call}>
+                    <StreamTheme>
+                        <div className="h-full flex flex-col">
+                            <div className="flex-1 overflow-hidden">
+                                <SpeakerLayout participantBarPosition="right" />
                             </div>
-                            
-                        </>
-                    )}
-                </div>
-            )}
+                            <div className="border-t border-[#2d3139] p-3 flex justify-center">
+                                <CallControls />
+                            </div>
+                        </div>
+                    </StreamTheme>
+                </StreamCall>
+            </StreamVideo>
         </div>
     );
 }
+
 export default VideoCallUi;
